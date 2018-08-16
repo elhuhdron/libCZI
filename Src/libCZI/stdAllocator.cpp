@@ -34,7 +34,10 @@ void* CHeapAllocator::Allocate(std::uint64_t size)
 	return malloc((size_t)size);
 #else
 #if defined(__GNUC__)
-	return aligned_alloc(32, size);
+	//return aligned_alloc(32, size);
+	void *pv;
+	int res = posix_memalign(&pv, 32, size);
+	return pv;
 #else
 	void* pv = _aligned_malloc((size_t)size, 32);
 	return pv;
